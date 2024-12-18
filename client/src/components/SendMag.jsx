@@ -1,6 +1,13 @@
 import React from 'react'
+import {io} from 'socket.io-client' 
 
 const SendMag = ({msgData}) => {
+  const socket = io("http://localhost:3000",{withCredentials : true})
+  socket.on("connect",()=> {
+    socket.on("newMsg", msg=> {
+      console.log(msg)
+    })
+  })
   console.log("rendered sendMsg")
   return (
     <div className='sendMsgWrapper h-[35px] w-full flex justify-end items-center mb-2'>
