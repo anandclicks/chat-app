@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import ChatPage from './pages/ChatPage'
 import Register from './pages/Register'
 import Login from './pages/Login'
+import dotenv from 'dotenv'
 
 function App() {
   const [count, setCount] = useState(0)

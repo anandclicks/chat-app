@@ -7,9 +7,7 @@ import { users } from '../data/users'
 import { loggedInUser } from '../data/LoggedInUser'
 
 const ChatPage = () => {
-  const data = users?.messeges?.map((item, index) => item);
-
-  console.log(users[0]?.messeges)
+  
   return (
     <div className='h-[100vh] w-[100vw] bg-slate-200'>
       <div className="chatWrapper h-full max-w-[1300px] mx-auto pt-[100px] pb-[100px] flex gap-5">
@@ -23,10 +21,10 @@ const ChatPage = () => {
           <div className="allMsgs">
             {users[0]?.messeges?.map((item,index)=> {
             return  item.senderId == loggedInUser._id ? (
-                <SendMag msgData= {item}/>
+                <SendMag key={index} msgData= {item}/>
               ) :
               (
-                <RecieveMsg msgData= {item}/>
+                <RecieveMsg key={index} msgData= {item}/>
               ) 
             
             })}
