@@ -17,3 +17,19 @@
   border: none;
   border-bottom: 1px solid #999999;
 }
+
+
+/* Lodaing div css  */
+.loadingCircle{
+  animation: loading 2s  infinite cubic-bezier(0.075, 0.82, 0.165, 2);
+  box-shadow: 0px 0px 0px;
+}
+
+@keyframes loading {
+  0% {
+       rotate: 0deg;
+  }
+  100% {
+       rotate: 360deg;
+  }
+}
