@@ -40,33 +40,10 @@ app.use('/api/users',userRoute)
 
 // Socket io event handling 
 const server = http.createServer(app);
-const io = socketIoConnection(server)
+socketIoConnection(server)
 
 // Online users data store 
 let onlineUsers = []
-
-io.once("connection",socket=> {
-  io.use(async(socket,next)=> {
-    const cookies = socket.handshake.headers.cookie
-    if(typeof cookies !== "string") return
-    const {token} = cookie.parse(cookies)
-    const loggedinUserEmail = await jwt.verify(token,process.env.JWT_SECREAT)
-    // Adding online user into online users array 
-   const isUserAlreadyOnline = onlineUsers.find((item)=> item.socektId === socket.id)
-   if(!isUserAlreadyOnline){
-    onlineUsers.push({email : loggedinUserEmail.email, socektId : socket.id})
-   }
-   // Removing ofline user from online users array 
-    socket.once("disconnect", ()=> {
-      onlineUsers = onlineUsers.filter((item)=> item.socektId !== socket.id)
-    })
-
-    // Event for sending online Users data 
-    socket.emit("onlineUser",{onlineUsers : onlineUsers})
-    next()
-  })
-})
-
 
 
 

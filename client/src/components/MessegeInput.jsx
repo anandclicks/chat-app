@@ -3,9 +3,6 @@ import { io } from 'socket.io-client'
 
 const MessegeInput = () => {
 
-
-
-
   return (
     <div className='h-[50px] w-[full] flex gap-3 mt-5'>
       <input className='h-full w-[95%] bg-slate-200 rounded-3xl outline-none px-3 text-[14px]' placeholder='Type a messege..' type="text" />

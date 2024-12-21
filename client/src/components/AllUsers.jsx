@@ -3,8 +3,11 @@ import { SocketIoContext } from "../../scoektIoContext/Socket.Io";
 import axios from "axios";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import { Link, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 
 const AllUsers = () => {
+  // Stavlising socket io connection 
+  io.connect("http://localhost:3000")
   // Use state for redirection
   const [redirect, setredirect] = useState(false);
   // api call for getting data of loggedin user
@@ -31,7 +34,8 @@ const AllUsers = () => {
   const { socket } = useContext(SocketIoContext);
   const [onlineUsers, setonlineUsers] = useState([]);
   socket.on("onlineUser", (payload) => {
-    setonlineUsers(payload.onlineUsers);
+    setonlineUsers(payload);
+    console.log("one user connected")
   });
 
 
@@ -47,7 +51,7 @@ const AllUsers = () => {
       setallUsers(() => response.data.users);
     };
     apiCall();
-  }, []);
+  }, [onlineUsers]);
 
 
 
@@ -60,7 +64,7 @@ const AllUsers = () => {
     }
   }, [redirect]);
 
-
+console.log(onlineUsers)
 
   return (
     <div className="w-full flex flex-col gap-5 h-[100%]">
@@ -94,7 +98,7 @@ const AllUsers = () => {
              {/* name and greet  */}
              <div className="nameAndGreet h-full w-[60%] flex flex-col justify-center">
                <h2 className="leading-5">{item.name}</h2>
-               {onlineUsers.find((user) => user.email === item.email) ? (
+               {onlineUsers?.find((user) => user.email === item.email) ? (
                  <p className="text-[13px] text-green-600">Online</p>
                ) : (
                  <p className="text-[13px] text-stone-600">{item?.greet}</p>
