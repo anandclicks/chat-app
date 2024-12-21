@@ -1,19 +1,34 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AllUsers from '../components/AllUsers'
 import MessegeInput from '../components/MessegeInput'
 import SendMag from '../components/SendMag'
 import RecieveMsg from '../components/RecieveMsg'
 import { users } from '../data/users'
-import { loggedInUser } from '../data/LoggedInUser'
 import { useParams } from 'react-router-dom'
+import { OtherDataContext } from '../../scoektIoContext/OtherDataContext'
+import { SocketIoContext } from '../../scoektIoContext/Socket.Io'
+import { LoggedinUserContext } from '../../scoektIoContext/LoggdinUserContext'
 
 const ChatPage = () => {
   // Use state for storing chats between loggedin user and this perticuler userid's person 
   const [chats, setchats] = useState([])
+  console.log(chats)
+  // Geeing id number of currecnt reciever user  
+  const {socket} = useContext(SocketIoContext)
+  const {loggedInUser} = useContext(LoggedinUserContext)
+  useEffect(() => {
+    socket.on("recieveMessege", payload => {
+        setchats(prev => [...prev, payload])
+    });
 
-  // Getting userid from params for fetching chats betweeb loggedInUser and pertuculer user 
-  // const {id} = useParams()
-  // console.log(id)
+
+    // Cleanup listener on component unmount
+    return () => {
+        socket.off("recieveMessege");
+    };
+}, [socket]);
+
+
   return (
     <div className='h-[100vh] w-[100vw] bg-slate-200'>
       <div className="chatWrapper h-full max-w-[1300px] mx-auto pt-[100px] pb-[100px] flex gap-5">
@@ -33,8 +48,8 @@ const ChatPage = () => {
           <div className="allMsgs">
            {chats.length > 0 && (
             <div>
-               {users[0]?.messeges?.map((item,index)=> {
-            return  item.senderId == loggedInUser._id ? (
+               {chats.map((item,index)=> {
+            return  item.sender === toString(loggedInUser?._id) ? (
                 <SendMag key={index} msgData= {item}/>
               ) :
               (
@@ -45,9 +60,9 @@ const ChatPage = () => {
             </div>
            )}
           </div>
-          {chats.length != 0 && (
-          <MessegeInput/>
-          )}
+          
+          <MessegeInput setchats={setchats}/>
+
         </div>
       </div>
     </div>

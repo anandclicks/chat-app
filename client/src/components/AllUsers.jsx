@@ -4,10 +4,24 @@ import axios from "axios";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 
 const AllUsers = () => {
-  // Stavlising socket io connection 
-  io.connect("http://localhost:3000")
+  // Getting function to set user id of reciever 
+  const {setrecieverId} = useContext(OtherDataContext)
+    // listining socket for online user data
+    const { socket } = useContext(SocketIoContext);
+    const [onlineUsers, setonlineUsers] = useState([]);
+    socket.on("onlineUser", (payload) => {
+      setonlineUsers(payload);
+      console.log("one user connected")
+    });
+
+    socket.on("recieveMsg", payload=> {
+      console.log(payload)
+    })
+  
+  
   // Use state for redirection
   const [redirect, setredirect] = useState(false);
   // api call for getting data of loggedin user
@@ -29,14 +43,6 @@ const AllUsers = () => {
   }, []);
 
 
-
-  // listining socket for online user data
-  const { socket } = useContext(SocketIoContext);
-  const [onlineUsers, setonlineUsers] = useState([]);
-  socket.on("onlineUser", (payload) => {
-    setonlineUsers(payload);
-    console.log("one user connected")
-  });
 
 
 
@@ -83,7 +89,8 @@ console.log(onlineUsers)
         {allUsers?.map((item, index) => (
          <div key={index}>
           {item._id !== loggedinUser._id && (
-             <Link to={`chat/${item._id}`}
+             <div
+             onClick={()=> setrecieverId(item._id)}
              key={index}
              className="h-[70px] w-full flex py-[10px] gap-2 items-center border-b-[1px] border-stone-200 cursor-pointer"
            >
@@ -109,7 +116,7 @@ console.log(onlineUsers)
              <div className="h-full">
                <p className="text-[12px]">{item.lastSeen}</p>
              </div>
-           </Link>
+           </div>
           )}
          </div>
         ))}

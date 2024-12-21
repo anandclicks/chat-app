@@ -9,7 +9,6 @@ const SendMag = ({msgData}) => {
       <div className=' w-auto px-2 bg-sky-500 text-white text-sm h-full flex justify-center items-center rounded-3xl min-w-[50px]'>
       {msgData.messege}
     </div>
-    <img className='h-[40px] w-[40px] rounded-full object-cover ms-2' src={msgData.profilePicture} alt="" />
     </div>
   )
 }
