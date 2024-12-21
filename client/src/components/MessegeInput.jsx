@@ -17,7 +17,10 @@ const MessegeInput = ({setchats}) => {
   
   // Fuction for sending messeges 
   const sendMessege = ()=> {
+   if(recieverId){
     socket.emit("sendMessege",{messege : messege, sender :loggedinUser._id, reciever : recieverId })
+    setMessege(' ')
+   }
   }
 
 

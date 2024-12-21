@@ -15,7 +15,7 @@ const ChatPage = () => {
   console.log(chats)
   // Geeing id number of currecnt reciever user  
   const {socket} = useContext(SocketIoContext)
-  const {loggedInUser} = useContext(LoggedinUserContext)
+  const {loggedinUser} = useContext(LoggedinUserContext)
   useEffect(() => {
     socket.on("recieveMessege", payload => {
         setchats(prev => [...prev, payload])
@@ -28,7 +28,7 @@ const ChatPage = () => {
     };
 }, [socket]);
 
-
+console.log(loggedinUser._id)
   return (
     <div className='h-[100vh] w-[100vw] bg-slate-200'>
       <div className="chatWrapper h-full max-w-[1300px] mx-auto pt-[100px] pb-[100px] flex gap-5">
@@ -46,10 +46,10 @@ const ChatPage = () => {
           )}
           {/* All messeges  */}
           <div className="allMsgs">
-           {chats.length > 0 && (
+           {chats?.length > 0 && (
             <div>
                {chats.map((item,index)=> {
-            return  item.sender === toString(loggedInUser?._id) ? (
+            return  item?.sender === loggedinUser?._id ? (
                 <SendMag key={index} msgData= {item}/>
               ) :
               (
