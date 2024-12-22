@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { OtherDataContext } from '../../scoektIoContext/OtherDataContext'
 import { SocketIoContext } from '../../scoektIoContext/Socket.Io'
 import { LoggedinUserContext } from '../../scoektIoContext/LoggdinUserContext'
+import axios from 'axios'
 
 const ChatPage = () => {
   // Use state for storing chats between loggedin user and this perticuler userid's person 
@@ -16,17 +17,24 @@ const ChatPage = () => {
   // Geeing id number of currecnt reciever user  
   const {socket} = useContext(SocketIoContext)
   const {loggedinUser} = useContext(LoggedinUserContext)
+  const {recieverId} = useContext(OtherDataContext)
   useEffect(() => {
     socket.on("recieveMessege", payload => {
         setchats(prev => [...prev, payload])
     });
 
-
-    // Cleanup listener on component unmount
-    return () => {
-        socket.off("recieveMessege");
-    };
 }, [socket]);
+
+// Fetching chats 
+useEffect(()=> {
+  if(recieverId){
+    const fetchingChats = async ()=> {
+      const response = await axios.get(`http://localhost:3000/api/chats/${recieverId}`, {withCredentials : true})
+      setchats(response.data?.allChats)
+    }
+    fetchingChats()
+  }
+},[recieverId])
 
 console.log(loggedinUser._id)
   return (
@@ -49,7 +57,7 @@ console.log(loggedinUser._id)
            {chats?.length > 0 && (
             <div>
                {chats.map((item,index)=> {
-            return  item?.sender === loggedinUser?._id ? (
+            return  item?.senderId === loggedinUser?._id ? (
                 <SendMag key={index} msgData= {item}/>
               ) :
               (
@@ -61,7 +69,9 @@ console.log(loggedinUser._id)
            )}
           </div>
           
-          <MessegeInput setchats={setchats}/>
+          {recieverId && (
+            <MessegeInput setchats={setchats}/>
+          )}
 
         </div>
       </div>

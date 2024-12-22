@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const cookie = require('cookie')
 const jwt = require('jsonwebtoken')
 const userModel = require("../models/user.model")
-
+const messegeModel = require("../models/messege.model")
 
 let onlineUsers = []
 
@@ -60,15 +60,28 @@ const io = new Server(server, {
     const recieverOriginalData = await userModel.findOne({_id : reciever})
     const senderOriginalData = await userModel.findOne({_id : sender})
 
-
     // Getting socket id to send messege in realtime 
   const {socketId} = onlineUsers.find((item)=> item.email == recieverOriginalData.email)
-  console.log('this is reciever socket id',socketId)
-  console.log(onlineUsers)
-  console.log(payload)
 
     // sending messege 
     socket.to(socketId).emit("recieveMessege",payload)
+
+    // Creating messege object and saving into messeges databse  
+    if(reciever && sender && messege) {
+      if(recieverOriginalData && senderOriginalData) {
+        // creating and Saving messege into sender and reciever's messeges array 
+        const newMessege = await messegeModel.create({
+          senderId : sender,
+          recieverId : reciever,
+          messege,
+        })
+        // saving messeg into both account's messege array 
+        recieverOriginalData.chats.push(newMessege)
+        await recieverOriginalData.save()
+        senderOriginalData.chats.push(newMessege)
+        await senderOriginalData.save()
+      }
+    }
   })
  })
 };

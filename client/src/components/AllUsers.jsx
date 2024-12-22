@@ -12,6 +12,7 @@ const AllUsers = () => {
     // listining socket for online user data
     const { socket } = useContext(SocketIoContext);
     const [onlineUsers, setonlineUsers] = useState([]);
+    
     socket.on("onlineUser", (payload) => {
       setonlineUsers(payload);
       console.log("one user connected")

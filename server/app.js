@@ -15,7 +15,7 @@ const cookie = require("cookie")
 
 // Importing Routes handler 
 const userRoute = require('./Routes/user.route');
-
+const chatRoute = require("./Routes/messege.route")
 
 // io 
 const socketIoConnection = require("./socekt io/socekt.io");
@@ -36,7 +36,7 @@ app.use(
 
 // Forwording request to routes controller 
 app.use('/api/users',userRoute)
-
+app.use('/api/chats/',chatRoute)
 
 // Socket io event handling 
 const server = http.createServer(app);
