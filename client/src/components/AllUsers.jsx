@@ -6,19 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 
-const AllUsers = () => {
+const AllUsers = ({onlineUsers}) => {
   // Getting function to set user id of reciever 
   const {setrecieverId} = useContext(OtherDataContext)
     // listining socket for online user data
     const { socket } = useContext(SocketIoContext);
-    const [onlineUsers, setonlineUsers] = useState([]);
     
     useEffect(()=>{
-      socket.on("onlineUser", (payload) => {
-        setonlineUsers(payload);
-        console.log("one user connected")
-      });
-  
       socket.on("recieveMsg", payload=> {
         console.log(payload)
       })
@@ -70,7 +64,7 @@ const AllUsers = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (redirect) {
-      navigate("/login");
+      navigate("/");
     }
   }, [redirect]);
 

@@ -28,7 +28,7 @@ const Register = () => {
   const navigate = useNavigate()
   useEffect(()=> {
     if(redirect) {
-      navigate('/login')
+      navigate('/')
     }
   },[redirect])
 

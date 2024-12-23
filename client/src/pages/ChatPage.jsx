@@ -37,16 +37,40 @@ useEffect(()=> {
   }
 },[recieverId])
 
-console.log(loggedinUser._id)
+
+// Fetching clieckedUseid by api call 
+const [selectedUserData, setselectedUserData] = useState([])
+
+useEffect(()=> {
+  const apiCall = async()=> {
+    const response = await axios.get(`http://localhost:3000/api/users/user/${recieverId}`, {withCredentials : true})
+    setselectedUserData(response.data.user)
+  }
+  if(recieverId){
+    apiCall()
+  }
+},[recieverId])
+
+// Online user 
+const [onlineUsers, setonlineUsers] = useState([]);
+useEffect(()=> {
+  socket.on("onlineUser", (payload) => {
+    setonlineUsers(payload);
+    console.log("one user connected")
+  });
+
+}, [socket])
+
+console.log(selectedUserData)
   return (
     <div className='h-[100vh] w-[100vw] bg-slate-200'>
       <div className="chatWrapper h-full max-w-[1300px] mx-auto pt-[100px] pb-[100px] flex gap-5">
         {/* left side  */}
         <div className="chatPageLeft w-[350px]">
-        <AllUsers/>
+        <AllUsers onlineUsers={onlineUsers}/>
         </div>
         {/* right side  */} 
-        <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-end">
+        <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-between">
           {/* if chtas are not there  */}
           {chats.length == 0 && (
             <div className='h-full w-full flex justify-center items-center'>
@@ -54,7 +78,18 @@ console.log(loggedinUser._id)
             </div>
           )}
           {/* All messeges  */}
-          <div className=''></div>
+      
+          <div className='w-full h-[50px] flex gap-2 items-center'>
+            <img className='h-full rounded-full' src={`http://localhost:3000${selectedUserData?.profilePicture}`} alt="" />
+            {/* chat header */}
+            <div >
+              <h2>{selectedUserData?.name}</h2>
+             {onlineUsers?.find((user) => user.email === selectedUserData.email) ? (
+              <p className='text-[13px] leading-3 text-green-500'>Online</p>
+             ) : (<p className='text-[13px] leading-3'>Ofline</p>)}
+            </div>
+          </div>
+     
          <div className='chatsAndInput'>
          <div className="allMsgs">
            {chats?.length > 0 && (
