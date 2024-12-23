@@ -3,7 +3,7 @@ import AllUsers from '../components/AllUsers'
 import MessegeInput from '../components/MessegeInput'
 import SendMag from '../components/SendMag'
 import RecieveMsg from '../components/RecieveMsg'
-import { users } from '../data/users'
+
 import { useParams } from 'react-router-dom'
 import { OtherDataContext } from '../../scoektIoContext/OtherDataContext'
 import { SocketIoContext } from '../../scoektIoContext/Socket.Io'
@@ -24,6 +24,7 @@ const ChatPage = () => {
     });
 
 }, [socket]);
+
 
 // Fetching chats 
 useEffect(()=> {
@@ -53,7 +54,9 @@ console.log(loggedinUser._id)
             </div>
           )}
           {/* All messeges  */}
-          <div className="allMsgs">
+          <div className=''></div>
+         <div className='chatsAndInput'>
+         <div className="allMsgs">
            {chats?.length > 0 && (
             <div>
                {chats.map((item,index)=> {
@@ -72,6 +75,7 @@ console.log(loggedinUser._id)
           {recieverId && (
             <MessegeInput setchats={setchats}/>
           )}
+         </div>
 
         </div>
       </div>

@@ -61,10 +61,12 @@ const io = new Server(server, {
     const senderOriginalData = await userModel.findOne({_id : sender})
 
     // Getting socket id to send messege in realtime 
-  const {socketId} = onlineUsers.find((item)=> item.email == recieverOriginalData.email)
+  const socketId = onlineUsers.find((item)=> item.email == recieverOriginalData.email)?.socketId
 
     // sending messege 
-    socket.to(socketId).emit("recieveMessege",payload)
+    if(socketId){
+      socket.to(socketId).emit("recieveMessege",payload)
+    }
 
     // Creating messege object and saving into messeges databse  
     if(reciever && sender && messege) {

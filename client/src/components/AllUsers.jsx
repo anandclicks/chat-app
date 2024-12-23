@@ -13,14 +13,17 @@ const AllUsers = () => {
     const { socket } = useContext(SocketIoContext);
     const [onlineUsers, setonlineUsers] = useState([]);
     
-    socket.on("onlineUser", (payload) => {
-      setonlineUsers(payload);
-      console.log("one user connected")
-    });
-
-    socket.on("recieveMsg", payload=> {
-      console.log(payload)
-    })
+    useEffect(()=>{
+      socket.on("onlineUser", (payload) => {
+        setonlineUsers(payload);
+        console.log("one user connected")
+      });
+  
+      socket.on("recieveMsg", payload=> {
+        console.log(payload)
+      })
+      console.log("it should be recalled")
+    },[socket])
   
   
   // Use state for redirection
@@ -76,14 +79,14 @@ console.log(onlineUsers)
   return (
     <div className="w-full flex flex-col gap-5 h-[100%]">
       {/* search box  */}
-      <div className="searachBox bg-white h-[50px] w-full rounded-3xl text-[15px] flex items-center overflow-hidden gap-2 px-3">
+      {/* <div className="searachBox bg-white h-[50px] w-full rounded-3xl text-[15px] flex items-center overflow-hidden gap-2 px-3">
         <i className="ri-search-line"></i>
         <input
           className="placeholder-black h-full outline-none "
           placeholder="Search"
           type="text"
         />
-      </div>
+      </div> */}
 
       {/* users  */}
       <div className="w-full bg-white rounded-3xl px-5 py-3 h-[100%]">
