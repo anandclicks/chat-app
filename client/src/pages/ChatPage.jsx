@@ -71,6 +71,19 @@ console.log(selectedUserData)
         </div>
         {/* right side  */} 
         <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-between">
+          
+        <div className='w-full h-[50px] flex gap-2 items-center'>
+            <img className='h-full rounded-full' src={`http://localhost:3000${selectedUserData?.profilePicture}`} alt="" />
+            {/* chat header */}
+           {recieverId && (
+             <div >
+             <h2>{selectedUserData?.name}</h2>
+            {onlineUsers?.find((user) => user.email === selectedUserData.email) ? (
+             <p className='text-[13px] leading-3 text-green-500'>Online</p>
+            ) : (<p className='text-[13px] leading-3'>Ofline</p>)}
+           </div>
+           )}
+          </div>
           {/* if chtas are not there  */}
           {chats.length == 0 && (
             <div className='h-full w-full flex justify-center items-center'>
@@ -78,17 +91,6 @@ console.log(selectedUserData)
             </div>
           )}
           {/* All messeges  */}
-      
-          <div className='w-full h-[50px] flex gap-2 items-center'>
-            <img className='h-full rounded-full' src={`http://localhost:3000${selectedUserData?.profilePicture}`} alt="" />
-            {/* chat header */}
-            <div >
-              <h2>{selectedUserData?.name}</h2>
-             {onlineUsers?.find((user) => user.email === selectedUserData.email) ? (
-              <p className='text-[13px] leading-3 text-green-500'>Online</p>
-             ) : (<p className='text-[13px] leading-3'>Ofline</p>)}
-            </div>
-          </div>
      
          <div className='chatsAndInput'>
          <div className="allMsgs">
