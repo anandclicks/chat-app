@@ -9,6 +9,7 @@ import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 import { SocketIoContext } from "../../scoektIoContext/Socket.Io";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import axios from "axios";
+import { useRef } from "react";
 
 const ChatPage = () => {
   const [chats, setchats] = useState([]);
@@ -36,11 +37,12 @@ const ChatPage = () => {
     socket.on("recieveMessege", (payload) => {
       setchats((prev) => [...prev, payload]);
     });
+    return () => {
+      socket.off("recieveMessege", console.log("cleanup"));
+    };
   }, []);
 
-  // Fetching clieckedUseid by api call
   const [selectedUserData, setselectedUserData] = useState([]);
-
   useEffect(() => {
     const apiCall = async () => {
       const response = await axios.get(
@@ -60,9 +62,18 @@ const ChatPage = () => {
     socket.on("onlineUser", (payload) => {
       setonlineUsers(payload);
     });
-
-    return socket.off("reviced msg")
+    return () => {
+      socket.off("onlineUser", console.log("hey"));
+    };
   }, []);
+
+  // screen scroll 
+  const viewchatref = useRef(null);
+  useEffect(() => {
+    if (viewchatref.current) {
+      viewchatref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chats]);
 
   return (
     <div className="h-[100vh] w-[100vw] bg-slate-200">
@@ -72,7 +83,7 @@ const ChatPage = () => {
           <AllUsers onlineUsers={onlineUsers} />
         </div>
         {/* right side  */}
-        <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-between">
+        <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-between relative">
           <div className="w-full h-[50px] flex gap-2 items-center">
             <img
               className="h-full rounded-full"
@@ -93,9 +104,9 @@ const ChatPage = () => {
           </div>
           {/* if chtas are not there  */}
           {chats.length == 0 && (
-            <div className="h-full w-full flex justify-center items-center">
+            <div className=" w-full flex justify-center items-center absolute h-[60vh]">
               <img
-                className="h-[200px] w-[200px] object-cover"
+                className="h-[200px] w-[200px] object-cover "
                 src="http://localhost:3000/uploads/defaultProfile.png"
                 alt=""
               />
@@ -104,7 +115,7 @@ const ChatPage = () => {
           {/* All messeges  */}
 
           <div className="chatsAndInput">
-           <div className="allMsgswrapper h-[60vh] flex justify-end overflow-scroll">
+            <div className="allMsgswrapper h-[60vh] flex justify-end overflow-scroll">
               {chats?.length > 0 && (
                 <div className="w-full allMsgs items-end flex-col flex">
                   {chats.map((item, index) => {
@@ -114,9 +125,10 @@ const ChatPage = () => {
                       <RecieveMsg key={index} msgData={item} />
                     );
                   })}
+              <div ref={viewchatref} />
                 </div>
               )}
-           </div>
+            </div>
 
             {recieverId && <MessegeInput setchats={setchats} />}
           </div>
