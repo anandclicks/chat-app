@@ -45,7 +45,7 @@ const Register = () => {
             <input onChange={(evt)=> handleInput(evt)} value={formData.userName} className='inputStyling placeholder:text-black text-[14px]' name='userName' placeholder='Username' type="text" />
             <input onChange={(evt)=> handleInput(evt)} value={formData.password} className='inputStyling placeholder:text-black text-[14px]' name='password' placeholder='password' type="text" />
             <input className='h-[50px] bg-sky-500 text-white w-full rounded-xl mt-5 cursor-pointer' type='submit' value={'Sign-up'} />
-            <p className='capitalize text-[12px] mt-3'>Already have an Account go for <Link className='text-sky-400 underline' to={'/login'}>Login</Link></p>
+            <p className='capitalize text-[12px] mt-3'>Already have an Account go for <Link className='text-sky-400 underline' to={'/'}>Login</Link></p>
           </div>
         </form>
       </div>

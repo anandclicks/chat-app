@@ -34,3 +34,7 @@
   }
 }
 
+
+.allMsgswrapper::-webkit-scrollbar{
+  display: none;
+}
