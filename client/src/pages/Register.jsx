@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [redirect, setredirect] = useState(false);
@@ -16,10 +17,17 @@ const Register = () => {
   };
 
   const apiCall = async (evt) => {
+     // showing alert
+      const toastId = toast.loading("Processing...!");
     evt.preventDefault();
     const response = await axios.post('http://localhost:3000/api/users/user-registration', formData, { withCredentials: true });
     if (response?.data.sucess) {
       setredirect(true);
+      toast.dismiss(toastId);
+     toast.success(response.data.message);
+    }else {
+       toast.dismiss(toastId);
+       toast.error(response.data.message);
     }
   };
 

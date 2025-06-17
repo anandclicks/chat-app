@@ -8,8 +8,6 @@ const isUserAuthenticate = (req,res,next)=> {
   try {
     // Dstructring cookie 
     let {token} = req.cookies
-    console.log("is atuh cookie",token)
-    
     if(!token){
       return res.json({
         sucesss : false,

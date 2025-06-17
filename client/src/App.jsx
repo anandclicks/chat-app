@@ -5,6 +5,7 @@ import ChatPage from './pages/ChatPage'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import dotenv from 'dotenv'
+import {ToastContainer} from 'react-toastify'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
       <Route path='/register' element={<Register/>}/>
       <Route path='/' element={<Login/>}/>
     </Routes>
+    <ToastContainer/>
     </>
   )
 }

@@ -38,3 +38,6 @@
 .allMsgswrapper::-webkit-scrollbar{
   display: none;
 }
+.messageWrapper::-webkit-scrollbar{
+  display: none;
+}

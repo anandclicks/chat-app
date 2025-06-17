@@ -1,25 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import AllUsers from "../components/AllUsers";
 import MessegeInput from "../components/MessegeInput";
 import SendMag from "../components/SendMag";
 import RecieveMsg from "../components/RecieveMsg";
-
 import { useParams } from "react-router-dom";
 import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 import { SocketIoContext } from "../../scoektIoContext/Socket.Io";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import axios from "axios";
-import { useRef } from "react";
 
 const ChatPage = () => {
   const [chats, setchats] = useState([]);
+  const [selectedUserData, setselectedUserData] = useState([]);
+  const [onlineUsers, setonlineUsers] = useState([]);
 
-  // Geeing id number of currecnt reciever user
   const { socket } = useContext(SocketIoContext);
   const { loggedinUser } = useContext(LoggedinUserContext);
   const { recieverId } = useContext(OtherDataContext);
 
-  // Fetching chats
+  const viewchatref = useRef(null);
+
+  // Fetch chats
   useEffect(() => {
     if (recieverId) {
       const fetchingChats = async () => {
@@ -33,16 +34,25 @@ const ChatPage = () => {
     }
   }, [recieverId]);
 
+
+
+  // Incoming message listener
   useEffect(() => {
-    socket.on("recievemessage", (payload) => {
+    const handleReceiveMessage = (payload) => {
+      console.log(payload);
       setchats((prev) => [...prev, payload]);
-    });
+    };
+
+    socket.on("recievemessage", handleReceiveMessage);
+
     return () => {
-      socket.off("recievemessage", console.log("cleanup"));
+      socket.off("recievemessage", handleReceiveMessage);
     };
   }, []);
 
-  const [selectedUserData, setselectedUserData] = useState([]);
+
+
+  // Fetch receiver data
   useEffect(() => {
     const apiCall = async () => {
       const response = await axios.get(
@@ -51,13 +61,12 @@ const ChatPage = () => {
       );
       setselectedUserData(response.data.user);
     };
-    if (recieverId) {
-      apiCall();
-    }
+    if (recieverId) apiCall();
   }, [recieverId]);
 
-  // Online user
-  const [onlineUsers, setonlineUsers] = useState([]);
+
+
+  // Online user listener
   useEffect(() => {
     socket.on("onlineUser", (payload) => {
       setonlineUsers(payload);
@@ -67,73 +76,74 @@ const ChatPage = () => {
     };
   }, []);
 
-  // screen scroll 
-  const viewchatref = useRef(null);
+  // Auto scroll
   useEffect(() => {
     if (viewchatref.current) {
       viewchatref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chats]);
 
+
+
+
   return (
-    <div className="h-[100vh] w-[100vw] ">
-      <div className="chatWrapper h-full max-w-[1300px] mx-auto py-[40px] 2xl:pt-[100px] 2xl:pb-[100px] flex gap-5">
-        {/* left side  */}
-        <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl">
+    <div className="h-screen w-screen">
+      <div className="chatWrapper h-full max-w-[1300px] mx-auto py-10 2xl:py-[100px] flex gap-5">
+        {/* Left panel */}
+        <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl overflow-hidden">
           <AllUsers onlineUsers={onlineUsers} />
         </div>
-        {/* right side  */}
-        <div className="chatField w-[850px] h-full p-3 bg-white shadow-lg rounded-3xl flex flex-col justify-between relative">
-          <div className="w-full h-[50px] flex gap-2 items-center ">
-            {
-              recieverId && (
-                <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center shadow-sm">
-            <span className="text-sm  text-indigo-600">
-                {selectedUserData?.name?.[0]?.toUpperCase() || "U"}
-              </span>
-            </div>
-              )
-            }
-            {/* chat header */}
+
+        {/* Right panel */}
+        <div className="chatField flex-1 h-full p-4 bg-white shadow-lg rounded-3xl flex flex-col justify-between relative">
+          {/* Header */}
+          <div className="w-full h-[50px] flex gap-3 items-center mb-2">
             {recieverId && (
-              <div>
-                <h2>{selectedUserData?.name}</h2>
-                {onlineUsers[selectedUserData.email] ? (
-                  <p className="text-[13px] text-green-600">Online</p>
-                ) : (
-                  <p className="text-[13px] leading-3">Ofline</p>
-                )}
-              </div>
+              <>
+                <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center shadow-sm">
+                  <span className="text-sm text-indigo-600">
+                    {selectedUserData?.name?.[0]?.toUpperCase() || "U"}
+                  </span>
+                </div>
+                <div>
+                  <h2 className="font-semibold">{selectedUserData?.name}</h2>
+                  {onlineUsers[selectedUserData.email] ? (
+                    <p className="text-sm text-green-600">Online</p>
+                  ) : (
+                    <p className="text-sm text-gray-500">Offline</p>
+                  )}
+                </div>
+              </>
             )}
           </div>
-          {/* if chtas are not there  */}
-          {chats.length == 0 && (
-            <div className=" w-full flex justify-center items-center absolute h-[60vh]">
+
+          {/* No chats placeholder */}
+          {chats.length === 0 && (
+            <div className="absolute inset-0 flex justify-center items-center h-[70vh]">
               <img
-                className="h-[200px] w-[200px] object-cover "
-                src="http://localhost:3000/uploads/defaultProfile.png"
-                alt=""
+                className="h-[300px] w-[300px] object-cover"
+                src="https://chatgen.ai/wp-content/uploads/2023/04/AI-chat-5.png"
+                alt="No messages"
               />
             </div>
           )}
-          {/* All messages  */}
 
-          <div className="chatsAndInput">
-            <div className="allMsgswrapper h-[60vh] flex justify-end overflow-scroll">
-              {chats?.length > 0 && (
-                <div className="w-full allMsgs items-end flex-col flex">
-                  {chats.map((item, index) => {
-                    return item?.senderId === loggedinUser?._id ? (
-                      <SendMag key={index} msgData={item} />
-                    ) : (
-                      <RecieveMsg key={index} msgData={item} />
-                    );
-                  })}
-                  <div ref={viewchatref} />
-                </div>
-              )}
+          {/* Chat messages and input */}
+          <div className="flex flex-col justify-between h-[calc(100%-60px)]">
+            <div className="allMsgswrapper flex-1 overflow-y-auto pr-2">
+              <div className="w-full flex flex-col items-end">
+                {chats.map((item, index) =>
+                  item?.senderId === loggedinUser?._id ? (
+                    <SendMag key={index} msgData={item} />
+                  ) : (
+                    <RecieveMsg key={index} msgData={item} />
+                  )
+                )}
+                <div ref={viewchatref} />
+              </div>
             </div>
 
+            {/* Input */}
             {recieverId && <MessegeInput setchats={setchats} />}
           </div>
         </div>

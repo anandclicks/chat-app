@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [redirect, setredirect] = useState(false);
   const [formData, setformData] = useState({
-    userName: '',
-    password: ''
+    userName: "",
+    password: "",
   });
 
   const handleInput = (evt) => {
@@ -14,18 +15,29 @@ const Login = () => {
   };
 
   const apiCall = async (evt) => {
+    // showing alert
+    const toastId = toast.loading("Processing...!");
     evt.preventDefault();
-    const response = await axios.post("http://localhost:3000/api/users/user-login", formData, { withCredentials: true });
+    const response = await axios.post(
+      "http://localhost:3000/api/users/user-login",
+      formData,
+      { withCredentials: true }
+    );
     console.log(response);
     if (response?.data.sucess) {
       setredirect(true);
+      toast.dismiss(toastId);
+      toast.success(response.data.message);
+    } else {
+      toast.dismiss(toastId);
+      toast.error(response.data.message);
     }
   };
 
   const navigate = useNavigate();
   useEffect(() => {
     if (redirect) {
-      navigate('/chat');
+      navigate("/chat");
     }
   }, [redirect]);
 
@@ -33,13 +45,16 @@ const Login = () => {
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       <div className="w-full max-w-4xl flex flex-col md:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white">
         {/* Left Side Image */}
-        <div 
+        <div
           className="hidden md:block md:w-1/2 bg-cover bg-center relative"
-          style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/two-young-asian-female-friends-are-scrolling-their-smartphone-while-sitting-cafe-together_660230-84444.jpg')" }}
+          style={{
+            backgroundImage:
+              "url('https://img.freepik.com/premium-photo/two-young-asian-female-friends-are-scrolling-their-smartphone-while-sitting-cafe-together_660230-84444.jpg')",
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
         </div>
-        
+
         {/* Right Side Form */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-10">
           <form
@@ -50,7 +65,9 @@ const Login = () => {
               <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
                 Welcome Back
               </h1>
-              <p className="text-gray-500 text-sm">Sign in to continue your journey</p>
+              <p className="text-gray-500 text-sm">
+                Sign in to continue your journey
+              </p>
             </div>
 
             <div className="space-y-6">
@@ -95,14 +112,27 @@ const Login = () => {
                 type="submit"
               >
                 <span>Log In</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
                 </svg>
               </button>
 
               <p className="text-center text-sm text-gray-600">
-                Don’t have an account?{' '}
-                <Link className="text-indigo-600 hover:text-indigo-800 font-medium transition-colors" to="/register">
+                Don’t have an account?{" "}
+                <Link
+                  className="text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
+                  to="/register"
+                >
                   Register
                 </Link>
               </p>

@@ -1,25 +1,28 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
 import { createContext } from "react";
 import { io } from "socket.io-client";
+import { LoggedinUserContext } from "./LoggdinUserContext";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 export const SocketIoContext = createContext({});
 export const SocketIoContextProvider = ({ children }) => {
-  // socket connection 
+  const { loggedinUser } = useContext(LoggedinUserContext);
+  // socket connection
   const socket = io("http://localhost:3000", {
     withCredentials: true,
   });
 
-
-
-  // online users list 
+  // online users list
   const [onlineUsers, setonlineUsers] = useState([]);
-  socket.on("onlineUser", (payload) => {
-    console.log(payload);
-    setonlineUsers(payload);
-  });
-
+  useEffect(() => {
+    socket.on("onlineUser", (payload) => {
+      console.log(payload);
+      setonlineUsers(payload);
+    });
+  }, []);
 
 
   return (

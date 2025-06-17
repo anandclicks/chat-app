@@ -22,7 +22,6 @@ const handleChats = async(req,res)=> {
         { senderId: recieverId, recieverId: loggedInUser._id },
       ],
     });
-    console.log(chatsBetweenTheme)
   res.json({
     sucess : true,
     messeges : "All messeges!",
