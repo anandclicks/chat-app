@@ -34,11 +34,11 @@ const ChatPage = () => {
   }, [recieverId]);
 
   useEffect(() => {
-    socket.on("recieveMessege", (payload) => {
+    socket.on("recievemessage", (payload) => {
       setchats((prev) => [...prev, payload]);
     });
     return () => {
-      socket.off("recieveMessege", console.log("cleanup"));
+      socket.off("recievemessage", console.log("cleanup"));
     };
   }, []);
 
@@ -76,20 +76,24 @@ const ChatPage = () => {
   }, [chats]);
 
   return (
-    <div className="h-[100vh] w-[100vw] bg-slate-200">
-      <div className="chatWrapper h-full max-w-[1300px] mx-auto pt-[100px] pb-[100px] flex gap-5">
+    <div className="h-[100vh] w-[100vw] ">
+      <div className="chatWrapper h-full max-w-[1300px] mx-auto py-[40px] 2xl:pt-[100px] 2xl:pb-[100px] flex gap-5">
         {/* left side  */}
-        <div className="chatPageLeft w-[350px]">
+        <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl">
           <AllUsers onlineUsers={onlineUsers} />
         </div>
         {/* right side  */}
-        <div className="chatField w-[850px] h-full p-3 bg-white rounded-3xl flex flex-col justify-between relative">
-          <div className="w-full h-[50px] flex gap-2 items-center">
-            <img
-              className="h-full rounded-full"
-              src={`http://localhost:3000${selectedUserData?.profilePicture}`}
-              alt=""
-            />
+        <div className="chatField w-[850px] h-full p-3 bg-white shadow-lg rounded-3xl flex flex-col justify-between relative">
+          <div className="w-full h-[50px] flex gap-2 items-center ">
+            {
+              recieverId && (
+                <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center shadow-sm">
+            <span className="text-sm  text-indigo-600">
+                {selectedUserData?.name?.[0]?.toUpperCase() || "U"}
+              </span>
+            </div>
+              )
+            }
             {/* chat header */}
             {recieverId && (
               <div>
@@ -112,7 +116,7 @@ const ChatPage = () => {
               />
             </div>
           )}
-          {/* All messeges  */}
+          {/* All messages  */}
 
           <div className="chatsAndInput">
             <div className="allMsgswrapper h-[60vh] flex justify-end overflow-scroll">
@@ -125,7 +129,7 @@ const ChatPage = () => {
                       <RecieveMsg key={index} msgData={item} />
                     );
                   })}
-              <div ref={viewchatref} />
+                  <div ref={viewchatref} />
                 </div>
               )}
             </div>

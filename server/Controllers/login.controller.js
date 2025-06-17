@@ -15,7 +15,7 @@ const loginUser = async (req,res)=> {
       return res.json({
         sucess : false,
         status : 401,
-        messege : "Credentials missing!"
+        message : "Credentials missing!"
       })
     }
     // Checking for user existence 
@@ -24,7 +24,7 @@ const loginUser = async (req,res)=> {
       return res.json({
         sucess : false,
         status : 403,
-        messege : "User not found!"
+        message : "User not found!"
       })
     }else {
       // password dcrypting and veryfing 
@@ -33,7 +33,7 @@ const loginUser = async (req,res)=> {
           return res.json({
             sucess : false,
             status : 401,
-            messege : "Password is wrong!"
+            message : "Password is wrong!"
           })
         }else {
           const loggedInUserFinalData = await userModel.findOne({_id : userForLogin._id}).select('-password')
@@ -44,7 +44,7 @@ const loginUser = async (req,res)=> {
           res.json({
             sucess : true,
             status : 203,
-            messege : "Logged in sucessfull!",
+            message : "Logged in sucessfull!",
             user : loggedInUserFinalData
           })
         }
@@ -56,7 +56,7 @@ const loginUser = async (req,res)=> {
    return res.json({
       sucess : false,
       status : 403,
-      messege : "Internal server error!",
+      message : "Internal server error!",
       error
     })
   }

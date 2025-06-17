@@ -13,7 +13,7 @@ const registerNewUser = async (req, res) => {
       return res.json({
         sucess: false,
         status: 401,
-        messege: "Credentials missing!",
+        message: "Credentials missing!",
       });
     }
     // Checking weater user alredy exist from that email or userName
@@ -23,7 +23,7 @@ const registerNewUser = async (req, res) => {
       return res.json({
         sucess: false,
         status: 403,
-        messege: "User already exist! use diffent Email or userName",
+        message: "User already exist! use diffent Email or userName",
       });
     } else {
       // Hashing password for users account
@@ -39,13 +39,13 @@ const registerNewUser = async (req, res) => {
             return res.json({
               sucess: false,
               status: 500,
-              messege: "Something went wrong!",
+              message: "Something went wrong!",
             });
           } else {
             return res.json({
               sucess: true,
               status: 201,
-              messege: "User registration sucessfull!",
+              message: "User registration sucessfull!",
               user: registeredUser,
             });
           }
@@ -57,7 +57,7 @@ const registerNewUser = async (req, res) => {
     res.json({
       sucess: false,
       status: 500,
-      messege: "Internal server errror!",
+      message: "Internal server errror!",
       error,
     });
   }

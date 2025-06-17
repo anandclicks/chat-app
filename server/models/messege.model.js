@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-// Creating messege model 
+// Creating message model 
 const chatModel = new mongoose.Schema({
   senderId : {
     type : mongoose.Schema.Types.ObjectId,
@@ -12,7 +12,11 @@ const chatModel = new mongoose.Schema({
     ref : "userModel",
     required : true
   },
-  messege : {
+  isSeen : {
+    type : Boolean,
+    default : false
+  },
+  message : {
     type : String,
     required : true
   },

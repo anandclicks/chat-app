@@ -8,7 +8,7 @@ const RecieveMsg = ({msgData}) => {
     <div className='recieveMsgWrapper h-[35px] w-full flex items-start mb-2 flex-col'>
       {/* <small className='text-[10px]'>{formattedDate}</small> */}
       <div className='p-2 w-auto px-4 bg-slate-200 text-sm h-full flex justify-center items-center rounded-3xl min-w-[50px]'>
-      {msgData.messege}
+      {msgData.message}
     </div>
     </div>
   )

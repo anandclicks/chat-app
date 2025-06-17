@@ -32,5 +32,25 @@ const handleChats = async(req,res)=> {
 }
 
 
+// const sendUnreadMessages = async (req, res) => {
+//   const loggedInUser = req.user;
+//   // all unread messages
+//   const unreadMsgs = await messegeModel.find({
+//     isSeen: false,
+//     recieverId: loggedInUser._id,
+//   });
 
-module.exports = handleChats
+//   if (!unreadMsgs) {
+//     return res.json({
+//       success: true,
+//       message: unreadMsgs,
+//     });
+//   }
+//   return res.json({
+//     success: true,
+//     message: unreadMsgs,
+//   });
+// };
+
+
+module.exports = {handleChats}

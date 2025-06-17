@@ -7,9 +7,7 @@ import { io } from "socket.io-client";
 import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 
 const AllUsers = ({ onlineUsers }) => {
-  // Getting function to set user id of reciever
   const { setrecieverId } = useContext(OtherDataContext);
-  // listining socket for online user data
   const { socket } = useContext(SocketIoContext);
   const [socketstate, setsocketstate] = useState(socket);
 
@@ -21,7 +19,6 @@ const AllUsers = ({ onlineUsers }) => {
   }, [socket, socketstate]);
 
   const [redirect, setredirect] = useState(false);
-  // api call for getting data of loggedin user
   const { setloggedinUser, loggedinUser } = useContext(LoggedinUserContext);
   useEffect(() => {
     const apiCall = async () => {
@@ -39,7 +36,6 @@ const AllUsers = ({ onlineUsers }) => {
     apiCall();
   }, []);
 
-  // Api call for all users
   const [allUsers, setallUsers] = useState([]);
   useEffect(() => {
     const apiCall = async () => {
@@ -51,7 +47,6 @@ const AllUsers = ({ onlineUsers }) => {
     apiCall();
   }, [onlineUsers]);
 
-  // Redirection
   const navigate = useNavigate();
   useEffect(() => {
     if (redirect) {
@@ -59,71 +54,68 @@ const AllUsers = ({ onlineUsers }) => {
     }
   }, [redirect]);
 
-
   return (
-    <div className="w-full flex flex-col gap-5 h-[100%]">
-      {/* search box  */}
-      {/* <div className="searachBox bg-white h-[50px] w-full rounded-3xl text-[15px] flex items-center overflow-hidden gap-2 px-3">
-        <i className="ri-search-line"></i>
+    <div className="flex flex-col h-full p-6 bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl font-['Inter',sans-serif] text-gray-900">
+      {/* Search Box */}
+      <div className="relative mb-5">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
         <input
-          className="placeholder-black h-full outline-none "
-          placeholder="Search"
+          className="w-full pl-12 pr-4 py-3 bg-gray-50/80 border border-gray-100 rounded-2xl text-sm  text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-300"
+          placeholder="Search users..."
           type="text"
         />
-      </div> */}
+      </div>
 
-      {/* users  */}
-      <div className="w-full bg-white rounded-3xl px-5 py-3 h-[100%]">
+      {/* Users List */}
+      <div className="flex-1 rounded-2xl overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
         {allUsers?.map((item, index) => (
           <div key={index}>
             {item._id !== loggedinUser._id && (
               <div
                 onClick={() => setrecieverId(item._id)}
-                key={index}
-                className="h-[70px] w-full flex py-[10px] gap-2 items-center border-b-[1px] border-stone-200 cursor-pointer"
+                className="flex items-center gap-4 p-4 rounded-xl cursor-pointer hover:bg-indigo-50/30 transition-all duration-200 border-b border-gray-100/50 last:border-b-0"
               >
-                {/* profile picture  */}
-                <div className="profilePicture h-full w-[50px] rounded-full overflow-hidden relative z-0">
-                  <img
-                    className="h-full w-full object-cover"
-                    src={`http://localhost:3000${item?.profilePicture}`}
-                    alt=""
-                  />
+                {/* Profile Picture */}
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center shadow-sm">
+                  <span className="text-lg  text-indigo-600">
+                    {item?.name?.[0]?.toUpperCase() || "U"}
+                  </span>
                 </div>
-                {/* name and greet  */}
-                <div className="nameAndGreet h-full w-[60%] flex flex-col justify-center">
-                  <h2 className="leading-5">{item.name}</h2>
+                {/* Name and Status */}
+                <div className="flex-1">
+                  <h2 className="text-sm  tracking-tight">{item.name}</h2>
                   {onlineUsers[item.email] ? (
-                    <p className="text-[13px] text-green-600">Online</p>
+                    <p className="text-xs text-green-500 ">Online</p>
                   ) : (
-                    <p className="text-[13px] text-stone-600">{item?.greet}</p>
+                    <p className="text-xs text-gray-500 truncate font-light">{item?.greet}</p>
                   )}
                 </div>
-
-                {/* last seen  */}
-                <div className="h-full">
-                  <p className="text-[12px]">{item.lastSeen}</p>
-                </div>
+                {/* Last Seen */}
+                <div className="text-xs text-gray-400 font-light">{item.lastSeen}</div>
               </div>
             )}
           </div>
         ))}
       </div>
 
-      {/* loggedin user  */}
-      <div className="h-[60px] w-full bg-white rounded-3xl flex items-center justify-between px-2">
-        {/* prfilepic and name  */}
-        <div className="profuleAndName flex gap-2 items-center">
-          <img
-            className="h-[40px] w-[40px] rounded-full object-cover"
-            src={`http://localhost:3000${loggedinUser.profilePicture}`}
-            alt=""
-          />
-          <h2 className="text-sm">{loggedinUser.name}</h2>
+      {/* Logged-in User */}
+      <div className="flex items-center justify-between p-4 mt-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center shadow-sm">
+            <span className="text-sm  text-indigo-600">
+              {loggedinUser?.name?.[0]?.toUpperCase() || "U"}
+            </span>
+          </div>
+          <h2 className="text-sm tracking-tight">{loggedinUser.name}</h2>
         </div>
-        {/* logout icon  */}
-        <Link to={"/"}>
-          <i className="ri-logout-circle-r-line text-xl cursor-pointer"></i>
+        <Link to="/">
+          <svg className="w-5 h-5 text-gray-500 hover:text-indigo-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
         </Link>
       </div>
     </div>
