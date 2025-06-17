@@ -60,8 +60,9 @@ const socketIoConnection = (server) => {
 
     // Handle send message
     socket.on("sendmessage", async (payload) => {
-      const { reciever, sender, message } = payload;
-      if (!reciever || !sender || !message) return;
+      const { reciever, sender, message, images } = payload;
+
+      if (!reciever || !sender || (!message && !images.length)) return;
 
       try {
         const [recieverData, senderData] = await Promise.all([
@@ -75,8 +76,6 @@ const socketIoConnection = (server) => {
 
         // Emit to recipient if online
         if (recieverSocketId) {
-          console.log("sending msg to",recieverSocketId);
-          
           socket.to(recieverSocketId).emit("recievemessage", payload);
         }
 
@@ -85,6 +84,7 @@ const socketIoConnection = (server) => {
           senderId: sender,
           recieverId: reciever,
           message,
+          images : images
         });
 
         recieverData.chats.push(newMessage);

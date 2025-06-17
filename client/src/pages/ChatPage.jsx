@@ -13,7 +13,6 @@ const ChatPage = () => {
   const [chats, setchats] = useState([]);
   const [selectedUserData, setselectedUserData] = useState([]);
   const [onlineUsers, setonlineUsers] = useState([]);
-
   const { socket } = useContext(SocketIoContext);
   const { loggedinUser } = useContext(LoggedinUserContext);
   const { recieverId } = useContext(OtherDataContext);
@@ -39,16 +38,18 @@ const ChatPage = () => {
   // Incoming message listener
   useEffect(() => {
     const handleReceiveMessage = (payload) => {
-      console.log(payload);
       setchats((prev) => [...prev, payload]);
     };
 
     socket.on("recievemessage", handleReceiveMessage);
-
     return () => {
       socket.off("recievemessage", handleReceiveMessage);
     };
-  }, []);
+  }, [socket]);
+
+  useEffect(()=>{
+    console.log(chats);
+  },[chats])
 
 
 
@@ -75,6 +76,7 @@ const ChatPage = () => {
       socket.off("onlineUser", console.log("hey"));
     };
   }, []);
+
 
   // Auto scroll
   useEffect(() => {

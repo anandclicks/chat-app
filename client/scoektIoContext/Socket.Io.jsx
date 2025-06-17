@@ -18,10 +18,14 @@ export const SocketIoContextProvider = ({ children }) => {
   // online users list
   const [onlineUsers, setonlineUsers] = useState([]);
   useEffect(() => {
-    socket.on("onlineUser", (payload) => {
-      console.log(payload);
-      setonlineUsers(payload);
-    });
+    const handleOnlineUser = (payload) => {
+      setonlineUsers(payload)
+    }
+    socket.on("onlineUser", handleOnlineUser);
+
+    return () => {
+      socket.off("onlineUsers",handleOnlineUser)
+    }
   }, []);
 
 

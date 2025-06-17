@@ -18,8 +18,12 @@ const chatModel = new mongoose.Schema({
   },
   message : {
     type : String,
-    required : true
+    default : null
   },
+  images : {
+    type: [String],
+    default : []
+  }
 }, {timestamps : true})
 
 
