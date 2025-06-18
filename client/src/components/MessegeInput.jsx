@@ -107,10 +107,10 @@ const MessegeInput = ({ setchats }) => {
     <div className='h-[50px] w-full flex gap-3 mt-5'>
       {/* Image Previews */}
       {attachment.length > 0 && (
-        <div className="w-[95%] flex gap-2 mb-7  z-50 ms-3 absolute bottom-[50px] flex-wrap p-2 rounded-2xl bg-[#00000013] backdrop-blur-sm">
+        <div className="md:w-[95%] w-[95%] ms-2 flex gap-2 mb-7 start-0   z-50 md:ms-3 absolute bottom-[50px] flex-wrap p-2 rounded-2xl bg-[#00000013] backdrop-blur-sm">
           {attachment.map((item, index) => (
            <div className="relative" key={index}>
-             <img className='h-[130px] w-[130px] object-contain rounded-2xl' key={index} src={item} alt="preview" />
+             <img className='md:h-[130px] h-[80px] md:w-[130px] w-[80px] object-contain rounded-2xl' key={index} src={item} alt="preview" />
              <i onClick={()=>removeSelctedImage(index)} className="ri-close-large-line mainBgColor text-white text-steal-600 absolute top-0 right-0 h-[25px] w-[25px] cursor-pointer hover:rotate-12 transition-all flex justify-center items-center rounded-full "></i>
            </div>
           ))}
@@ -132,7 +132,7 @@ const MessegeInput = ({ setchats }) => {
       <input
         onChange={(e) => setMessage(e.target.value)}
         value={message}
-        className='h-full w-[90%] bg-slate-200 rounded-3xl outline-none px-3 text-[14px]'
+        className='h-full w-[75%] md:w-[90%] bg-slate-200 rounded-3xl outline-none px-3 text-[14px]'
         placeholder='Type a message...'
         type="text"
       />

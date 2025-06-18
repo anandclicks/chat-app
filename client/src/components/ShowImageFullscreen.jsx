@@ -15,7 +15,7 @@ const ShowImageFullscreen = ({ images }) => {
         <div
           className={`${
             needToShow ? "scale-[1] " : " scale-[0]"
-          } flex  absolute h-full w-full   overflow-hidden z-30 top-0 left-0  items-center justify-center transition-all duration-300 `}
+          } flex  absolute h-full w-[95%] ms-2   overflow-hidden z-30 top-0 left-0  items-center justify-center transition-all duration-300 `}
         >
           {/* all images  */}
           <div className="md:w-[900px] h-[65%] bg-[#00000018] rounded-2xl shadow-2xl backdrop-blur-sm overflow-hidden p-3">

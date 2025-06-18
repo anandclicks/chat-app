@@ -6,7 +6,8 @@ import { SocketIoContext } from "../../scoektIoContext/Socket.Io";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 
-const AllUsers = ({ onlineUsers }) => {
+const AllUsers = ({ funAndData }) => {
+  const {onlineUsers,setmobileChatOpen} = funAndData
   const { socket } = useContext(SocketIoContext);
   const { loggedinUser, setloggedinUser } = useContext(LoggedinUserContext);
   const { setrecieverId } = useContext(OtherDataContext);
@@ -106,9 +107,9 @@ const AllUsers = ({ onlineUsers }) => {
 
 
   return (
-    <div className="flex flex-col h-full p-6 bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl font-['Inter',sans-serif] text-gray-900">
+    <div className="flex flex-col h-full p-2 md:p-6 bg-white/90 backdrop-blur-xl md:rounded-3xl shadow-xl font-['Inter',sans-serif] text-gray-900">
       {/* Search Box */}
-      <div className="relative mb-5">
+      <div className="relative mb-5 mt-2 md:mt-0">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
           <svg className="w-5 h-5 mainColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -131,7 +132,7 @@ const AllUsers = ({ onlineUsers }) => {
               user._id !== loggedinUser?._id ? (
                 <div
                   key={user._id}
-                  onClick={() => setrecieverId(user._id)}
+                  onClick={() => {setrecieverId(user._id); setmobileChatOpen(true)}}
                   className="flex items-center gap-4 p-4 rounded-xl cursor-pointer hover:bg-indigo-50/30 transition-all duration-200 border-b border-gray-100/50 last:border-b-0"
                 >
                   <div className="h-12 w-12 rounded-full bg-gradient-to-br mainBgColor flex items-center justify-center shadow-sm">
