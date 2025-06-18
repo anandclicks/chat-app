@@ -47,3 +47,6 @@
 .mainColor  {
   color: #177DE0;
 }
+.allUsersWrapper::-webkit-scrollbar {
+  display: none;
+}

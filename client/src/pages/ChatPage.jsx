@@ -116,7 +116,7 @@ useEffect(() => {
 
 
   return (
-    <div className="h-screen w-screen">
+    <div className="md:h-screen h-[100vh] w-screen">
       {/* Fullscreen image view */}
       <ShowImageFullscreen images={allInboxImages} />
 
@@ -132,7 +132,7 @@ useEffect(() => {
           <div className="w-full h-[50px] flex gap-3 items-center mb-2">
             {recieverId && (
               <>
-                <i onClick={()=>setmobileChatOpen((prev)=> !prev)} class="md:hidden ri-arrow-left-line mainColor text-3xl"></i>
+                <i onClick={()=>setmobileChatOpen((prev)=> !prev)} className="md:hidden ri-arrow-left-line mainColor text-3xl"></i>
                 <div className="h-12 w-12 rounded-full mainBgColor flex items-center justify-center shadow-sm">
                 
                   <span className="text-2xl text-white">

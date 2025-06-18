@@ -108,8 +108,15 @@ const AllUsers = ({ funAndData }) => {
 
   return (
     <div className="flex flex-col h-full p-2 md:p-6 bg-white/90 backdrop-blur-xl md:rounded-3xl shadow-xl font-['Inter',sans-serif] text-gray-900">
+        {/* logo  */}
+        {/* <div className="flex items-center mb-3">
+          <img className="h-[50px] object-contain" src="https://i.pinimg.com/474x/70/50/97/705097cfa8c786482828da8da6796751.jpg" alt="" />
+        <div>
+            <p className="leading-[10px]">A² Chat</p>
+        </div>
+        </div> */}
       {/* Search Box */}
-      <div className="relative mb-5 mt-2 md:mt-0">
+      <div className="relative mb-5  md:mt-0">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
           <svg className="w-5 h-5 mainColor" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -125,7 +132,7 @@ const AllUsers = ({ funAndData }) => {
       </div>
 
       {/* Users List */}
-      <div className="flex-1 rounded-2xl overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
+      <div className="flex-1  rounded-2xl overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent allUsersWrapper">
         {searchedUser && (
           <>
             {searchedUser.map((user) =>
@@ -133,7 +140,7 @@ const AllUsers = ({ funAndData }) => {
                 <div
                   key={user._id}
                   onClick={() => {setrecieverId(user._id); setmobileChatOpen(true)}}
-                  className="flex items-center gap-4 p-4 rounded-xl cursor-pointer hover:bg-indigo-50/30 transition-all duration-200 border-b border-gray-100/50 last:border-b-0"
+                  className="flex shadow mt-2 items-center gap-4 p-4 rounded-xl cursor-pointer hover:bg-indigo-50/30 transition-all duration-200 border-b border-gray-100/50 last:border-b-0"
                 >
                   <div className="h-12 w-12 rounded-full bg-gradient-to-br mainBgColor flex items-center justify-center shadow-sm">
                     <span className="text-lg text-white">
@@ -165,7 +172,7 @@ const AllUsers = ({ funAndData }) => {
       </div>
 
       {/* Logged-in User */}
-      <div className="h-[60px] flex items-center justify-between p-4 mt-4 mainBgColor shadow-sm rounded-lg">
+      <div className="left-0 w-full md:relative h-[60px] flex items-center justify-between p-4 mt-4 mainBgColor shadow-sm rounded-lg">
         <div className="flex items-center gap-4">
           <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
             <span className="text-sm text-white-600">
