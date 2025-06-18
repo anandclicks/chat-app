@@ -20,47 +20,64 @@ const ChatPage = () => {
   const { recieverId } = useContext(OtherDataContext);
 
   const viewchatref = useRef(null);
-    // store all inbox images
-  const inboxImages = () => {
-    setallInboxImages([])
-    // setting imags for priview
+
+  // Extract inbox images properly when chats change
+  useEffect(() => {
+    if (!chats.length) {
+      setallInboxImages([]);
+      return;
+    }
+
+    const allImages = [];
+
     chats.forEach((chat) => {
       if (Array.isArray(chat.images)) {
-        chat.images.forEach((img) => {
-          if (!allInboxImages.includes(img)) {
-            setallInboxImages((prev) => [...prev, img]);
-          }
-        });
-      } else {
-        if (!allInboxImages.includes(chat.images)) {
-          setallInboxImages((prev) => [...prev, chat.images]);
-        }
+        allImages.push(...chat.images);
+      } else if (chat.images) {
+        allImages.push(chat.images);
       }
     });
-  };
 
-  useEffect(()=>{
-    inboxImages()
-  },[selectedUserData])
+    setallInboxImages(allImages);
+  }, [chats]);
 
-
-  // Fetch chats
+  //  Fetch chats
   useEffect(() => {
-    if (recieverId) {
-      const fetchingChats = async () => {
+    const fetchingChats = async () => {
+      try {
         const response = await axios.get(
           `http://localhost:3000/api/chats/${recieverId}`,
           { withCredentials: true }
         );
-        setchats(response.data?.allChats);
-      };
+        setchats(response.data?.allChats || []);
+      } catch (err) {
+        console.error("Failed to fetch chats", err);
+      }
+    };
+
+    if (recieverId) {
       fetchingChats();
     }
-  }, [selectedUserData]);
+  }, [recieverId]);
 
+  // Fetch receiver data
+  useEffect(() => {
+    const apiCall = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/users/user/${recieverId}`,
+          { withCredentials: true }
+        );
+        setselectedUserData(response.data.user);
+      } catch (err) {
+        console.error("Failed to fetch user data", err);
+      }
+    };
 
+    if (recieverId) apiCall();
+  }, [recieverId]);
 
-  // Incoming message listener
+  //  Incoming message listener
   useEffect(() => {
     const handleReceiveMessage = (payload) => {
       setchats((prev) => [...prev, payload]);
@@ -72,47 +89,32 @@ const ChatPage = () => {
     };
   }, [socket]);
 
-  // Fetch receiver data
-  useEffect(() => {
-    const apiCall = async () => {
-      const response = await axios.get(
-        `http://localhost:3000/api/users/user/${recieverId}`,
-        { withCredentials: true }
-      );
-      setselectedUserData(response.data.user);
-    };
-    if (recieverId) apiCall();
-  }, [recieverId]);
-
-  // Online user listener
+  //  Online user listener
   useEffect(() => {
     socket.on("onlineUser", (payload) => {
       setonlineUsers(payload);
     });
     return () => {
-      socket.off("onlineUser", console.log("hey"));
+      socket.off("onlineUser", () => {});
     };
   }, []);
 
-  // Auto scroll
+  //  Auto scroll
   useEffect(() => {
     if (viewchatref.current) {
       viewchatref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chats]);
 
-  useEffect(() => {
-    console.log(allInboxImages);
-  }, [allInboxImages]);
-
   return (
     <div className="h-screen w-screen">
-      {/* for showing inbox image messege  */}
+      {/* Fullscreen image view */}
       <ShowImageFullscreen images={allInboxImages} />
+
       <div className="chatWrapper h-full max-w-[1300px] mx-auto py-10 2xl:py-[100px] flex gap-5">
         {/* Left panel */}
         <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl overflow-hidden">
-          <AllUsers onlineUsers={{onlineUsers}} />
+          <AllUsers onlineUsers={{ onlineUsers }} />
         </div>
 
         {/* Right panel */}

@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { io } from 'socket.io-client'
+import { OtherDataContext } from '../../scoektIoContext/OtherDataContext'
 
 const SendMag = ({ msgData }) => {
-
+  const { setneedToShow} = useContext(OtherDataContext)
   return (
     <>
       {msgData?.images?.length >= 1 && (
         <div className='sendMsgWrapper h-[250px] w-full flex justify-end items-center mb-2'>
        
          <div className="relative max-w-[250px] h-[250px] rounded-xl overflow-hidden">
-            <img className='w-full h-full rounded-xl object-contain cursor-pointer ' src={msgData?.images[0]} alt="" />
+            <img onClick={()=>{setneedToShow(true)}} className='w-full h-full rounded-xl object-contain cursor-pointer ' src={msgData?.images[0]} alt="" />
 
             {/* image number  */}
            {msgData?.images.length >= 2 &&(
