@@ -21,26 +21,6 @@ const ChatPage = () => {
 
   const viewchatref = useRef(null);
 
-  // Extract inbox images properly when chats change
-  useEffect(() => {
-    if (!chats.length) {
-      setallInboxImages([]);
-      return;
-    }
-
-    const allImages = [];
-
-    chats.forEach((chat) => {
-      if (Array.isArray(chat.images)) {
-        allImages.push(...chat.images);
-      } else if (chat.images) {
-        allImages.push(chat.images);
-      }
-    });
-
-    setallInboxImages(allImages);
-  }, [chats]);
-
   //  Fetch chats
   useEffect(() => {
     const fetchingChats = async () => {
@@ -60,6 +40,9 @@ const ChatPage = () => {
     }
   }, [recieverId]);
 
+
+
+
   // Fetch receiver data
   useEffect(() => {
     const apiCall = async () => {
@@ -77,6 +60,9 @@ const ChatPage = () => {
     if (recieverId) apiCall();
   }, [recieverId]);
 
+
+
+
   //  Incoming message listener
   useEffect(() => {
     const handleReceiveMessage = (payload) => {
@@ -89,6 +75,14 @@ const ChatPage = () => {
     };
   }, [socket]);
 
+
+  useEffect(()=>{
+    console.log(allInboxImages);
+    
+  },[allInboxImages])
+
+
+
   //  Online user listener
   useEffect(() => {
     socket.on("onlineUser", (payload) => {
@@ -99,12 +93,20 @@ const ChatPage = () => {
     };
   }, []);
 
+
+
+
   //  Auto scroll
   useEffect(() => {
     if (viewchatref.current) {
       viewchatref.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chats]);
+
+
+
+
+
 
   return (
     <div className="h-screen w-screen">
@@ -157,9 +159,9 @@ const ChatPage = () => {
               <div className="w-full flex flex-col items-end">
                 {chats.map((item, index) =>
                   item?.senderId === loggedinUser?._id ? (
-                    <SendMag key={index} msgData={item} />
+                    <SendMag key={index} msgDataObj={{item,setallInboxImages}} />
                   ) : (
-                    <RecieveMsg key={index} msgData={item} />
+                    <RecieveMsg key={index} msgDataObj={{item,setallInboxImages}} />
                   )
                 )}
                 <div ref={viewchatref} />
