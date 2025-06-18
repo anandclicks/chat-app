@@ -5,7 +5,7 @@ import { OtherDataContext } from '../../scoektIoContext/OtherDataContext'
 
 const RecieveMsg = ({ msgDataObj }) => {
    const { setneedToShow} = useContext(OtherDataContext)
-   const {item,setallInboxImages } = msgDataObj
+   const {item,setallInboxImages  } = msgDataObj
   return (
     <>
       {item?.images?.length >= 1 && (

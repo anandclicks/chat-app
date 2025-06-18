@@ -139,15 +139,15 @@ useEffect(() => {
           <div className="w-full h-[50px] flex gap-3 items-center mb-2">
             {recieverId && (
               <>
-                <div className="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center shadow-sm">
-                  <span className="text-sm text-indigo-600">
+                <div className="h-12 w-12 rounded-full mainBgColor flex items-center justify-center shadow-sm">
+                  <span className="text-2xl text-white">
                     {selectedUserData?.name?.[0]?.toUpperCase() || "U"}
                   </span>
                 </div>
                 <div>
                   <h2 className="font-semibold">{selectedUserData?.name}</h2>
                   {onlineUsers[selectedUserData.email] ? (
-                    <p className="text-sm text-green-600">Online</p>
+                    <p className="text-sm text-green-500">Online</p>
                   ) : (
                     <p className="text-sm text-gray-500">Offline</p>
                   )}

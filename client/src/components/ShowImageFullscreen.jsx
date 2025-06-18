@@ -24,7 +24,7 @@ const ShowImageFullscreen = ({ images }) => {
               onClick={() => {
                 setneedToShow((prev) => !prev);
               }}
-              className="ri-close-large-line absolute top-0 end-0 text-xl m-5 bg-[#ff000059] backdrop-blur-sm z-10 h-[40px] w-[40px] rounded-full flex justify-center items-center text-white cursor-pointer hover:rotate-[30deg] transition-all"
+              className="ri-close-large-line absolute top-0 end-0 text-xl m-5 mainBgColor backdrop-blur-sm z-10 h-[40px] w-[40px] rounded-full flex justify-center items-center text-white cursor-pointer hover:rotate-[30deg] transition-all"
             ></i>
 
             <Swiper

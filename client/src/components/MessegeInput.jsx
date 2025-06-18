@@ -103,7 +103,7 @@ const MessegeInput = ({ setchats }) => {
 
       {/* Image Upload */}
       <div className='h-full w-[5%] relative flex justify-center items-center'>
-        <i className="ri-attachment-line"></i>
+        <i className="ri-attachment-line mainColor"></i>
         <input
           onChange={handleAttachment}
           type="file"
@@ -116,7 +116,7 @@ const MessegeInput = ({ setchats }) => {
       <input
         onChange={(e) => setMessage(e.target.value)}
         value={message}
-        className='h-full w-[95%] bg-slate-200 rounded-3xl outline-none px-3 text-[14px]'
+        className='h-full w-[90%] bg-slate-200 rounded-3xl outline-none px-3 text-[14px]'
         placeholder='Type a message...'
         type="text"
       />
@@ -124,7 +124,7 @@ const MessegeInput = ({ setchats }) => {
       {/* Send Button */}
       <i
         onClick={handleMsg}
-        className="ri-send-plane-fill h-full w-[50px] rounded-full bg-sky-400 text-xl text-white flex justify-center items-center cursor-pointer"
+        className="ri-send-plane-fill h-full w-[50px] rounded-full mainBgColor text-xl text-white flex justify-center items-center cursor-pointer"
       ></i>
     </div>
   );

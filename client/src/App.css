@@ -41,3 +41,9 @@
 .messageWrapper::-webkit-scrollbar{
   display: none;
 }
+.mainBgColor {
+  background-color: #f53a5c;
+}
+.mainColor  {
+  color: #f53a5c;
+}

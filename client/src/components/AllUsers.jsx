@@ -84,14 +84,14 @@ const AllUsers = ({ onlineUsers }) => {
       {/* Search Box */}
       <div className="relative mb-5">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </div>
         <input
           type="text"
           placeholder="Search users..."
-          className="w-full pl-12 pr-4 py-3 bg-gray-50/80 border border-gray-100 rounded-2xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-300"
+          className="w-full pl-12 pr-4 py-3 mainBgColor text-white rounded-2xl text-sm  placeholder-white focus:outline-none focus:ring-2  transition-all duration-300"
         />
       </div>
 
@@ -104,8 +104,8 @@ const AllUsers = ({ onlineUsers }) => {
               onClick={() => setrecieverId(user._id)}
               className="flex items-center gap-4 p-4 rounded-xl cursor-pointer hover:bg-indigo-50/30 transition-all duration-200 border-b border-gray-100/50 last:border-b-0"
             >
-              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center shadow-sm">
-                <span className="text-lg text-indigo-600">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br mainBgColor flex items-center justify-center shadow-sm">
+                <span className="text-lg text-white">
                   {user.name?.[0]?.toUpperCase() || "U"}
                 </span>
               </div>
@@ -124,17 +124,17 @@ const AllUsers = ({ onlineUsers }) => {
       </div>
 
       {/* Logged-in User */}
-      <div className="flex items-center justify-between p-4 mt-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+      <div className="flex items-center justify-between p-4 mt-4 mainBgColor shadow-sm rounded-lg">
         <div className="flex items-center gap-4">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center shadow-sm">
-            <span className="text-sm text-indigo-600">
+          <div className="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+            <span className="text-sm text-white-600">
               {loggedinUser?.name?.[0]?.toUpperCase() || "U"}
             </span>
           </div>
-          <h2 className="text-sm tracking-tight">{loggedinUser?.name}</h2>
+          <h2 className="text-sm tracking-tight text-white">{loggedinUser?.name}</h2>
         </div>
         <Link to="/">
-          <svg className="w-5 h-5 text-gray-500 hover:text-indigo-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
         </Link>

@@ -25,7 +25,7 @@ const SendMag = ({ msgDataObj }) => {
       {/* if text  */}
       {item?.message && (
         <div className='sendMsgWrapper h-[35px] w-full flex justify-end items-center my-2'>
-          <div className=' w-auto bg-sky-500 text-white text-sm h-full flex justify-center items-center rounded-3xl min-w-[50px] p-2 px-4'>
+          <div className=' w-auto mainBgColor text-white text-sm h-full flex justify-center items-center rounded-3xl min-w-[50px] p-2 px-4'>
             {item.message}
           </div>
         </div>
