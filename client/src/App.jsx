@@ -11,7 +11,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+    <div className='bg-[#0000001a]'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.css" integrity="sha512-6p+GTq7fjTHD/sdFPWHaFoALKeWOU9f9MPBoPnvJEWBkGS4PKVVbCpMps6IXnTiXghFbxlgDE8QRHc3MU91lJg==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
     <Routes>
       <Route path='/chat' element={<><ChatPage/></>}/>
@@ -19,7 +19,7 @@ function App() {
       <Route path='/' element={<Login/>}/>
     </Routes>
     <ToastContainer/>
-    </>
+    </div>
   )
 }
 

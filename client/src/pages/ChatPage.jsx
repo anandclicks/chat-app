@@ -8,16 +8,41 @@ import { OtherDataContext } from "../../scoektIoContext/OtherDataContext";
 import { SocketIoContext } from "../../scoektIoContext/Socket.Io";
 import { LoggedinUserContext } from "../../scoektIoContext/LoggdinUserContext";
 import axios from "axios";
+import ShowImageFullscreen from "../components/ShowImageFullscreen";
 
 const ChatPage = () => {
   const [chats, setchats] = useState([]);
   const [selectedUserData, setselectedUserData] = useState([]);
   const [onlineUsers, setonlineUsers] = useState([]);
+  const [allInboxImages, setallInboxImages] = useState([]);
   const { socket } = useContext(SocketIoContext);
   const { loggedinUser } = useContext(LoggedinUserContext);
   const { recieverId } = useContext(OtherDataContext);
 
   const viewchatref = useRef(null);
+    // store all inbox images
+  const inboxImages = () => {
+    setallInboxImages([])
+    // setting imags for priview
+    chats.forEach((chat) => {
+      if (Array.isArray(chat.images)) {
+        chat.images.forEach((img) => {
+          if (!allInboxImages.includes(img)) {
+            setallInboxImages((prev) => [...prev, img]);
+          }
+        });
+      } else {
+        if (!allInboxImages.includes(chat.images)) {
+          setallInboxImages((prev) => [...prev, chat.images]);
+        }
+      }
+    });
+  };
+
+  useEffect(()=>{
+    inboxImages()
+  },[selectedUserData])
+
 
   // Fetch chats
   useEffect(() => {
@@ -31,7 +56,7 @@ const ChatPage = () => {
       };
       fetchingChats();
     }
-  }, [recieverId]);
+  }, [selectedUserData]);
 
 
 
@@ -47,12 +72,6 @@ const ChatPage = () => {
     };
   }, [socket]);
 
-  useEffect(()=>{
-    console.log(chats);
-  },[chats])
-
-
-
   // Fetch receiver data
   useEffect(() => {
     const apiCall = async () => {
@@ -65,8 +84,6 @@ const ChatPage = () => {
     if (recieverId) apiCall();
   }, [recieverId]);
 
-
-
   // Online user listener
   useEffect(() => {
     socket.on("onlineUser", (payload) => {
@@ -77,7 +94,6 @@ const ChatPage = () => {
     };
   }, []);
 
-
   // Auto scroll
   useEffect(() => {
     if (viewchatref.current) {
@@ -85,15 +101,18 @@ const ChatPage = () => {
     }
   }, [chats]);
 
-
-
+  useEffect(() => {
+    console.log(allInboxImages);
+  }, [allInboxImages]);
 
   return (
     <div className="h-screen w-screen">
+      {/* for showing inbox image messege  */}
+      <ShowImageFullscreen images={allInboxImages} />
       <div className="chatWrapper h-full max-w-[1300px] mx-auto py-10 2xl:py-[100px] flex gap-5">
         {/* Left panel */}
         <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl overflow-hidden">
-          <AllUsers onlineUsers={onlineUsers} />
+          <AllUsers onlineUsers={{onlineUsers}} />
         </div>
 
         {/* Right panel */}
