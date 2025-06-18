@@ -32,12 +32,23 @@ const MessegeInput = ({ setchats }) => {
   const handleAttachment = (evt) => {
     const files = evt.target?.files;
     if (!files) return;
-
     setImagesObj(files);
-
     const previewImages = Array.from(files).map(file => URL.createObjectURL(file));
     setAttachment(previewImages);
   };
+
+
+  // remove selected image handler 
+  const removeSelctedImage = (id)=>{
+    setAttachment(()=>{
+      return attachment.filter((item,index)=> index != id)
+    })
+
+    setImagesObj(()=>{
+     return Array.from(imagesObj).filter((item,index)=> index != id)
+    })
+  }
+
 
   // Handle message send (with or without images)
   const handleMsg = async () => {
@@ -90,13 +101,18 @@ const MessegeInput = ({ setchats }) => {
     }
   };
 
+
+
   return (
     <div className='h-[50px] w-full flex gap-3 mt-5'>
       {/* Image Previews */}
       {attachment.length > 0 && (
-        <div className="w-auto flex gap-2 mb-7 ms-3 absolute bottom-[50px] flex-wrap p-2 rounded-2xl bg-[#00000013]">
+        <div className="w-[95%] flex gap-2 mb-7  z-50 ms-3 absolute bottom-[50px] flex-wrap p-2 rounded-2xl bg-[#00000013] backdrop-blur-sm">
           {attachment.map((item, index) => (
-            <img className='h-[100px] rounded-2xl' key={index} src={item} alt="preview" />
+           <div className="relative" key={index}>
+             <img className='h-[130px] w-[130px] object-contain rounded-2xl' key={index} src={item} alt="preview" />
+             <i onClick={()=>removeSelctedImage(index)} className="ri-close-large-line mainBgColor text-white text-steal-600 absolute top-0 right-0 h-[25px] w-[25px] cursor-pointer hover:rotate-12 transition-all flex justify-center items-center rounded-full "></i>
+           </div>
           ))}
         </div>
       )}
