@@ -105,6 +105,20 @@ const ChatPage = () => {
 
 
 
+useEffect(() => {
+  if (!socket) return;
+
+  const handleOnlineUserUpdate = (users) => {
+    setonlineUsers(users);
+  };
+
+  socket.on("onlineUser", handleOnlineUserUpdate);
+
+  return () => {
+    socket.off("onlineUser", handleOnlineUserUpdate);
+  };
+}, [socket]);
+
 
 
 
@@ -116,7 +130,7 @@ const ChatPage = () => {
       <div className="chatWrapper h-full max-w-[1300px] mx-auto py-10 2xl:py-[100px] flex gap-5">
         {/* Left panel */}
         <div className="chatPageLeft w-[350px] shadow-lg rounded-3xl overflow-hidden">
-          <AllUsers onlineUsers={{ onlineUsers }} />
+          <AllUsers onlineUsers={onlineUsers} />
         </div>
 
         {/* Right panel */}

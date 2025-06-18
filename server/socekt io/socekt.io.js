@@ -46,6 +46,8 @@ const socketIoConnection = (server) => {
     }
   });
 
+
+  // connection even handling 
   io.on("connection", (socket) => {
     console.log(`User connected: ${socket.email}`);
     io.emit("onlineUser", onlineUsers);
@@ -58,12 +60,12 @@ const socketIoConnection = (server) => {
       }
     });
 
+
+    
     // Handle send message
     socket.on("sendmessage", async (payload) => {
       const { reciever, sender, message, images } = payload;
-
       if (!reciever || !sender || (!message && !images.length)) return;
-
       try {
         const [recieverData, senderData] = await Promise.all([
           userModel.findById(reciever),

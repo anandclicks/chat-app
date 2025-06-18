@@ -14,17 +14,17 @@ const ShowImageFullscreen = ({ images }) => {
       {images.length !== 0 && (
         <div
           className={`${
-            needToShow ? "scale-[0.9] " : " scale-[0]"
-          } flex  absolute h-full w-full  rounded-2xl overflow-hidden z-30 top-0 left-0   items-center justify-center transition-all duration-300 `}
+            needToShow ? "scale-[1] " : " scale-[0]"
+          } flex  absolute h-full w-full   overflow-hidden z-30 top-0 left-0  items-center justify-center transition-all duration-300 `}
         >
           {/* all images  */}
-          <div className="md:w-[900px] h-full bg-[#ffffff18] rounded-2xl shadow-2xl backdrop-blur-sm overflow-hidden p-3">
+          <div className="md:w-[900px] h-[60%] bg-[#00000018] rounded-2xl shadow-2xl backdrop-blur-sm overflow-hidden p-3">
             {/* for close model  */}
             <i
               onClick={() => {
                 setneedToShow((prev) => !prev);
               }}
-              className="ri-close-large-line absolute top-0 end-0 text-xl m-5 bg-[#ff000059] backdrop-blur-sm z-10 h-[40px] w-[40px] rounded-full flex justify-center items-center text-red-600 cursor-pointer hover:rotate-[30deg] transition-all"
+              className="ri-close-large-line absolute top-0 end-0 text-xl m-5 bg-[#ff000059] backdrop-blur-sm z-10 h-[40px] w-[40px] rounded-full flex justify-center items-center text-white cursor-pointer hover:rotate-[30deg] transition-all"
             ></i>
 
             <Swiper
